@@ -1,4 +1,3 @@
-// Importamos Express y librerías
 const express = require('express');
 const PDFDocument = require('pdfkit');
 const ExcelJS = require('exceljs');
@@ -12,7 +11,6 @@ app.get('/', (req, res) => {
   res.send('API de Estados Financieros');
 });
 
-// Validar estructura de los asientos contables
 function validarAsientos(asientos) {
   const tiposValidos = ['activo', 'pasivo', 'capital', 'ingreso', 'gasto', 'aportacion', 'retiro', 'utilidad', 'operacion', 'inversion', 'financiamiento'];
 
@@ -30,7 +28,6 @@ function validarAsientos(asientos) {
   return null;
 }
 
-// Funciones para calcular los estados financieros
 function calcularBalanceGeneral(asientos) {
   let activos = 0, pasivos = 0, capital = 0;
   if (!asientos || asientos.length === 0) return { activos, pasivos, capital, balance: 0 };
@@ -78,7 +75,6 @@ function calcularFlujosEfectivo(asientos) {
   return { operacion, inversion, financiamiento, flujoNeto: operacion + inversion + financiamiento };
 }
 
-// Ruta para procesar los asientos contables
 app.post('/api/estados-financieros', (req, res) => {
   const { asientos } = req.body;
 
@@ -99,7 +95,6 @@ app.post('/api/estados-financieros', (req, res) => {
   res.json({ balanceGeneral, estadoResultados, cambiosCapital, flujosEfectivo });
 });
 
-// Función auxiliar para exportar a Excel
 function agregarSeccionExcel(sheet, titulo, objeto) {
   if (objeto && Object.keys(objeto).length > 0) {
     sheet.addRow([titulo]);
@@ -109,7 +104,6 @@ function agregarSeccionExcel(sheet, titulo, objeto) {
   }
 }
 
-// Ruta para exportar a Excel
 app.post('/api/exportar/excel', async (req, res) => {
   const { balanceGeneral, estadoResultados, cambiosCapital, flujosEfectivo } = req.body;
 
